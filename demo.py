@@ -1,4 +1,7 @@
 import numpy
+from sympy.strategies.core import switch
+from time import sleep
+
 from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense
@@ -11,6 +14,7 @@ from keras import backend as K
 import matplotlib.pyplot as plt
 from scipy.misc import imread
 K.set_image_dim_ordering('th')
+from PIL import Image
 
 from keras.models import load_model
 
@@ -34,12 +38,14 @@ def baseline_module(num_classes):
     return model
 
 
-def showData(dataTesting_X):
-    # showTesting 1
-    plt.subplot(221)
-    plt.imshow(dataTesting_X[0], cmap=plt.get_cmap('gray'))
-    # show the plot
-    plt.show()
+def drawText():
+    print "-----------------Prediction-------------------"
+    print "-"
+    sleep(1)
+    print "---"
+    sleep(1)
+    print "------"
+    print "Done"
 
 
 def machineLearning(dataTraning_X, dataTraning_y, dataTesting_X, dataTesting_y):
@@ -77,13 +83,26 @@ def machineLearning(dataTraning_X, dataTraning_y, dataTesting_X, dataTesting_y):
 
         model.save('cnn_digit_number.h5')
 
-    im = imread("so4.png")
+    print "-----------------Recognize Digits-------------------"
+    inputData = raw_input("Enter input data:      ")
+    drawText()
 
-    im = im / 255
-    im = np_utils.to_categorical(im)
+    if model.predict_classes(dataTesting_X[inputData].reshape(1, 1, 28, 28))[0] == 7:
+        img = Image.open('number/7.png')
+        img.show()
 
-    pr = model.predict_classes(im.reshape(1, 1, 28, 28))
-    print(pr)
+    if model.predict_classes(dataTesting_X[inputData].reshape(1, 1, 28, 28))[0] == 2:
+        img = Image.open('number/2.png')
+        img.show()
+
+    if model.predict_classes(dataTesting_X[inputData].reshape(1, 1, 28, 28))[0] == 3:
+        img = Image.open('number/3.png')
+        img.show()
+
+    if model.predict_classes(dataTesting_X[inputData].reshape(1, 1, 28, 28))[0] == 1:
+        img = Image.open('number/1.png')
+        img.show()
+    print "-------------------------------------------------------------"
     # print("Baseline Error: %.2f%%" % (100 - scores[1] * 100))
 
 
